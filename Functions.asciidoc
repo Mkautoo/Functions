@@ -1,0 +1,389 @@
++*In[2]:*+
+[source, ipython3]
+----
+#Recursive function
+#calling function inside a same function is called recursive function
+#Factorial function by recursive function
+def factorial(n):
+    if n==0:
+        result=1
+    else:
+        result=n*factorial(n-1)
+    return result
+print(factorial(5))
+----
+
+
++*Out[2]:*+
+----
+120
+----
+
+
++*In[3]:*+
+[source, ipython3]
+----
+#Anonymous function
+s=lambda a,b:a if a>b else b
+print("The biggest of {} and {} is :{}".format(10,20,s(10,20)))
+----
+
+
++*Out[3]:*+
+----
+The biggest of 10 and 20 is :20
+----
+
+
++*In[6]:*+
+[source, ipython3]
+----
+#filter(): To filter a group of values based on some condition from the given sequence
+#Syntax: filter (function,sequence)
+#Without lambda
+def iseven(x):
+    if x%2==0:
+        return True
+    else:
+        return False
+l=[0,5,10,15,20,25,30]
+l1=list(filter(iseven,l))
+print(l1)
+----
+
+
++*Out[6]:*+
+----
+[0, 10, 20, 30]
+----
+
+
++*In[7]:*+
+[source, ipython3]
+----
+#with lambda
+l=[0,5,10,15,20,25,30]
+l1=list(filter(lambda x:x%2==0,l))
+print(l1)
+----
+
+
++*Out[7]:*+
+----
+[0, 10, 20, 30]
+----
+
+
++*In[8]:*+
+[source, ipython3]
+----
+#map()
+#map(function,sequence)
+def double(x):
+    return 2*x
+l=[1,2,3,4,5]
+l1=list(map(double,l))
+print(l1)
+----
+
+
++*Out[8]:*+
+----
+[2, 4, 6, 8, 10]
+----
+
+
++*In[9]:*+
+[source, ipython3]
+----
+#With lambda
+l=[1,2,3,4,5]
+l1=list(map(lambda x:2*x,l))
+print(l1)
+----
+
+
++*Out[9]:*+
+----
+[2, 4, 6, 8, 10]
+----
+
+
++*In[10]:*+
+[source, ipython3]
+----
+#reduce()
+#reduce(function,sequence)
+from functools import *
+l=[10,20,30,40,50]
+result=reduce(lambda x,y:x+y,l)
+print(result)
+----
+
+
++*Out[10]:*+
+----
+150
+----
+
+
++*In[14]:*+
+[source, ipython3]
+----
+#Similarly a function can return another function
+def outer():
+    print("Outer function started")
+    def inner():
+        print("inner function execution")
+    print("outer function returning inner function")
+    return inner
+f1=outer()
+f1()
+----
+
+
++*Out[14]:*+
+----
+Outer function started
+outer function returning inner function
+inner function execution
+----
+
+
++*In[4]:*+
+[source, ipython3]
+----
+#function decorators
+def decor(func):
+    def inner(name):
+        
+        if name=='sunny':
+            print("Hello sunny bad morning...")
+        else:
+            func(name)
+    return inner
+@decor
+def wish(name):
+    print("Hello",name,"Good morning")
+wish("Durga")
+wish("Ravi")
+wish("sunny")
+----
+
+
++*Out[4]:*+
+----
+Hello Durga Good morning
+Hello Ravi Good morning
+Hello sunny bad morning...
+----
+
+
++*In[8]:*+
+[source, ipython3]
+----
+def smartdivision(func):
+    def inner(a,b):
+        if b==0:
+            print("Hello stupid how can divide with zero")
+        else:
+            return func(a,b)
+    return inner 
+@smartdivision
+def division(a,b):
+    return a/b
+print(division(10,2))
+print(division(10,5))
+print(division(10,0))
+
+----
+
+
++*Out[8]:*+
+----
+5.0
+2.0
+Hello stupid how can divide with zero
+None
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#Decorator chaining
+#using more than one decorator
+----
+
+
++*In[10]:*+
+[source, ipython3]
+----
+#Generators
+def mygen():
+    yield 'A'
+    yield 'B'
+    yield 'C'
+    yield 'D'
+g=mygen()
+print(next(g))
+print(next(g))
+print(next(g))
+print(next(g))
+----
+
+
++*Out[10]:*+
+----
+A
+B
+C
+D
+----
+
+
++*In[12]:*+
+[source, ipython3]
+----
+def countdown(num):
+    print("start count down")
+    while(num>0):
+        yield num
+        num=num-1
+values=countdown(5)
+for x in values:
+    print(x)
+----
+
+
++*Out[12]:*+
+----
+start count down
+5
+4
+3
+2
+1
+----
+
+
++*In[14]:*+
+[source, ipython3]
+----
+#To generate first n numbers
+def firstn(num):
+    n=1
+    while n<=num:
+        yield n
+        n=n+1
+values=firstn(7)
+for x in values:
+    print(x)
+----
+
+
++*Out[14]:*+
+----
+1
+2
+3
+4
+5
+6
+7
+----
+
+
++*In[15]:*+
+[source, ipython3]
+----
+#To generate fibonacci numbers
+def fib():
+    a,b=0,1
+    while True :
+        yield a
+        a,b=b,a+b
+        
+f=fib()
+for x in f:
+    if x>100:
+        break
+    print(x)
+----
+
+
++*Out[15]:*+
+----
+0
+1
+1
+2
+3
+5
+8
+13
+21
+34
+55
+89
+----
+
+
++*In[17]:*+
+[source, ipython3]
+----
+#logging
+#log file and write WARNING and higher level msg
+import logging
+logging.basicConfig(filename='log.txt',level=logging.WARNING)
+print("python logging demo")
+logging.debug("debug message")
+logging.info("info message")
+logging.warning("warning message")
+logging.error("error message")
+logging.critical("critical message")
+----
+
+
++*Out[17]:*+
+----
+python logging demo
+----
+
+
++*In[18]:*+
+[source, ipython3]
+----
+#How to store exception info to log file 
+#logging.exception(msg)
+import logging
+logging.basicConfig(filename='log.txt',level=logging.INFO)
+logging.info("a new req came")
+try:
+    x=int(input("Enter first no:"))
+    y=int(input("Enter second no:"))
+    print(x/y)
+except ZeroDivisionError as msg :
+    print("Cannot divide with zero")
+    logging.exception(msg)
+except ValueError as msg:
+    print("Enter only int values ")
+    logging.exception(msg)
+logging.info("Request processing complete ")
+----
+
+
++*Out[18]:*+
+----
+Enter first no:10
+Enter second no:5
+2.0
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#debugging
+Identifying and resolving bug is called debugging
+----
